@@ -65,7 +65,7 @@ class FrontEndTestCase(TestCase):
         # the content of the rendered response is always a bytestring
         resp_text = resp.content.decode(resp.charset)
         self.assertTrue("Coolest Posts" in resp_text)
-        for count in range(1, 5):
+        for count in range(1, 11):
             title = "Post %d Title" % count
             if count < 6:
                 self.assertContains(resp, title, count=1)
