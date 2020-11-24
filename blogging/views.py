@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
@@ -9,6 +10,30 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from blogging.serializers import UserSerializer, PostSerializer, CategorySerializer
 from blogging.models import Post, Category
+from django.shortcuts import render, redirect
+from django import forms
+from django.utils import timezone
+from blogging.forms import MyCommentForm
+
+
+@login_required
+def add_model(request):
+    if request.method == "POST":
+        form = MyCommentForm(request.POST)
+        if form.is_valid():
+            model_instance = form.save(commit=False)
+            model_instance.created_date = timezone.now()
+            model_instance.author = User
+            model_instance.modified_date = None
+            model_instance.published_date = timezone.now()
+            model_instance.save()
+            return redirect('/')
+
+    else:
+
+        form = MyCommentForm()
+
+        return render(request, "my_template.html", {'form': form})
 
 
 class UserViewSet(viewsets.ModelViewSet):
