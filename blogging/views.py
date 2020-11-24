@@ -14,6 +14,25 @@ from django.shortcuts import render, redirect
 from django import forms
 from django.utils import timezone
 from blogging.forms import MyCommentForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+from blogging.forms import SignUpForm
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('/')
+    else:
+        form = SignUpForm()
+    return render(request, 'signup.html', {'form': form})
 
 
 @login_required
@@ -23,7 +42,7 @@ def add_model(request):
         if form.is_valid():
             model_instance = form.save(commit=False)
             model_instance.created_date = timezone.now()
-            model_instance.author = User
+            model_instance.author = request.user
             model_instance.modified_date = None
             model_instance.published_date = timezone.now()
             model_instance.save()
@@ -66,7 +85,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 class BlogListView(ListView):
     # queryset = Post.objects.order_by("-published_date")
-    queryset = Post.objects.exclude(published_date__exact=None)
+    queryset = Post.objects.exclude(published_date__exact=None).order_by("-published_date")
     template_name = "blogging/list.html"
 
     def stub_view(request, *args, **kwargs):

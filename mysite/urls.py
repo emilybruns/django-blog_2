@@ -21,6 +21,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import include, path
 from rest_framework import routers
 from blogging import views
+from blogging.views import signup
+
 
 router = routers.DefaultRouter()
 router.register(r"users", views.UserViewSet)
@@ -32,6 +34,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("blogging.urls")),
     path("login/", LoginView.as_view(template_name="login.html"), name="login"),
+    path("signup/", signup, name="signup"),
     path("logout/", LogoutView.as_view(next_page="/"), name="logout"),
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
