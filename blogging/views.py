@@ -21,18 +21,18 @@ from blogging.forms import SignUpForm
 
 
 def signup(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
+            username = form.cleaned_data.get("username")
+            raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('/')
+            return redirect("/")
     else:
         form = SignUpForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(request, "signup.html", {"form": form})
 
 
 @login_required
@@ -46,13 +46,13 @@ def add_model(request):
             model_instance.modified_date = None
             model_instance.published_date = timezone.now()
             model_instance.save()
-            return redirect('/')
+            return redirect("/")
 
     else:
 
         form = MyCommentForm()
 
-        return render(request, "my_template.html", {'form': form})
+        return render(request, "my_template.html", {"form": form})
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -85,7 +85,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 class BlogListView(ListView):
     # queryset = Post.objects.order_by("-published_date")
-    queryset = Post.objects.exclude(published_date__exact=None).order_by("-published_date")
+    queryset = Post.objects.exclude(published_date__exact=None).order_by(
+        "-published_date"
+    )
     template_name = "blogging/list.html"
 
     def stub_view(request, *args, **kwargs):
