@@ -2,6 +2,9 @@
 
 {% block content %}
 <h1>My Blog Login</h1>
+
+<p>No account? Then please <a href="/signup/">sign up</a>.</p>
+
 <form action="" method="POST">{% csrf_token %}
   {{ form.as_p }}
   <p><input type="submit" value="Log In"></p>

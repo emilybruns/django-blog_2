@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+{#<html>#}
+{#  <head>#}
+{#    <title>My Django Blog</title>#}
+{#    <link type="text/css" rel="stylesheet" href="/blogging/static/django_blog.css">#}
+{#  </head>#}
+{#  <body>#}
+{#    <div id="header">#}
+{#      <ul id="control-bar">#}
+{##}
+{#          <li><a href="/accounts/login/">login</a></li>#}
+{##}
+{#      </ul>#}
+{#     </div>#}
+{#    <div id="container">#}
+{#      <div id="content">#}
+
+<h1>Sign Up</h1>
+
+<p>Already have an account? Then please <a href="/login/">sign in</a>.</p>
+
+<form method="post">
+{% csrf_token %}
+{% for field in form %}
+  <p>
+    {{ field.label_tag }}<br>
+    {{ field }}
+    {% if field.help_text %}
+      <small style="color: grey">{{ field.help_text }}</small>
+    {% endif %}
+    {% for error in field.errors %}
+      <p style="color: red">{{ error }}</p>
+    {% endfor %}
+  </p>
+{% endfor %}
+<button type="submit">Sign up</button>
+</form>
+{#<form class="signup" id="signup_form" method="post" action="/accounts/signup/">#}
+{#  <input type="hidden" name="csrfmiddlewaretoken" value="uD3sfdonaRwMid2HGdrCay5SbToXc4sh2i9idd0PCtfyVd8hb75YIBnAp3rZn4jZ">#}
+{#  <p><label for="id_username">Username:</label> <input type="text" name="username" placeholder="Username" autofocus="autofocus" minlength="1" maxlength="150" required id="id_username"></p>#}
+{#<p><label for="id_email">E-mail (optional):</label> <input type="email" name="email" placeholder="E-mail address" id="id_email"></p>#}
+{#<p><label for="id_password1">Password:</label> <input type="password" name="password1" placeholder="Password" required id="id_password1"></p>#}
+{#<p><label for="id_password2">Password (again):</label> <input type="password" name="password2" placeholder="Password (again)" required id="id_password2"></p>#}
+{##}
+{#  <button type="submit">Sign Up &raquo;</button>#}
+{#</form>#}
+{% endblock %}
+
+{#      </div>#}
+{#    </div>#}
+{#  </body>#}
+{#</html>#}
